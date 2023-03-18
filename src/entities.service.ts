@@ -18,16 +18,16 @@ export function config(app:Express):ServiceConfigResult{
         return response
     })
     return {
-
-        "POST /entities":{
-            method:"GET",
-            path:"/",
-            response:"string",
-        },
         "GET /entities":{
             method:"GET",
-            path:"/",
-            response:"string",
+            path:"/entities",
+            response:"Drawable",
+        },
+        "POST /entities":{
+            method:"POST",
+            path:"/entities",
+            body:"Drawable",
+            response:"Drawable",
         },
     }
 }

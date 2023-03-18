@@ -38,6 +38,38 @@
             }
         },
         {
+            "name": "get-entities",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{server}}/entities",
+                    "host": [
+                        "{{server}}"
+                    ],
+                    "path": [
+                        "entities"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "post-entities",
+            "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                    "raw": "{{server}}/entities",
+                    "host": [
+                        "{{server}}"
+                    ],
+                    "path": [
+                        "entities"
+                    ]
+                }
+            }
+        },
+        {
             "name": "get-svelte-canvas-backend.postman_collection.json",
             "request": {
                 "method": "GET",
