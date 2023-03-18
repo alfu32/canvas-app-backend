@@ -5,6 +5,9 @@ import {config as apiServiceConfig} from './api.service'
 import { ServiceConfigResult } from "./meta";
 
 const app:Express = express();
+
+app.use(express.json());
+
 const configuredPaths={
   ...testServiceConfig(app),
   ...entitiesServiceConfig(app),

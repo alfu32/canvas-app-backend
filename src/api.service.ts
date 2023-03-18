@@ -3,12 +3,12 @@ import { trimIndent } from "./lib/trimIndent";
 import { ServiceConfigItemDescriptor, ServiceConfigResult } from "./meta";
 
 export function config(app:Express,configuredPaths:ServiceConfigResult):ServiceConfigResult{
-    configuredPaths["/svelte-canvas-backend.postman_collection.json"]={
+    configuredPaths["GET /svelte-canvas-backend.postman_collection.json"]={
       method:"GET",
       path:"/svelte-canvas-backend.postman_collection.json",
       response:"json",
     } as ServiceConfigItemDescriptor
-    configuredPaths["/api"]={
+    configuredPaths["GET /api"]={
       method:"GET",
       path:"/api",
       response:trimIndent(`
@@ -17,10 +17,10 @@ export function config(app:Express,configuredPaths:ServiceConfigResult):ServiceC
       }
       `),
     } as ServiceConfigItemDescriptor
-    app.get("/api",(req, res) => {
+    app.get("/api",(_req, res) => {
         res.send(configuredPaths)
     })
-    app.get('/svelte-canvas-backend.postman_collection.json', (req, res) => {
+    app.get('/svelte-canvas-backend.postman_collection.json', (_req, res) => {
       res.send({
         "info": {
           "_postman_id": "7bb60766-5647-4f40-9044-37008c1c709a",

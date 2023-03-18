@@ -29,12 +29,12 @@ export function config(app:Express):ServiceConfigResult{
         res.send({date:new Date(),ingredients,path:"ingredients",env:process.env});
     });
     return {
-        "/":{
+        "GET /":{
             method:"GET",
             path:"/",
             response:"string",
         },
-        "/ingredients":{
+        "GET /ingredients":{
             method:"GET",
             path:"/ingredients",
             response:trimIndent(`
