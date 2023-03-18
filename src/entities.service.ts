@@ -4,10 +4,9 @@ import { ServiceConfigResult } from "./meta";
 export function config(app:Express):ServiceConfigResult{
     app.get("/entities",async (req,res)=>{
         const response={
-            req:req.body,
             date:new Date()
         }
-        return response
+        res.send( response)
     })
     app.post("/entities",(req,res)=>{
 
@@ -15,7 +14,7 @@ export function config(app:Express):ServiceConfigResult{
             req:req.body,
             date:new Date()
         }
-        return response
+        res.send( response)
     })
     return {
         "GET /entities":{
