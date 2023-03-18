@@ -1,127 +1,126 @@
 {
-	"info": {
-		"_postman_id": "63481bf6-0af5-4f6e-a906-210c784ae544",
-		"name": "svelte-canvas-backend",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-	},
-	"item": [
-		{
-			"name": "get",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{server}}/",
-					"host": [
-						"{{server}}"
-					],
-					"path": [
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "get-ingredients",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{server}}/ingredients",
-					"host": [
-						"{{server}}"
-					],
-					"path": [
-						"ingredients"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "get-entities",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{server}}/entities",
-					"host": [
-						"{{server}}"
-					],
-					"path": [
-						"entities"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "post-entities",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"date\": \"2023-03-18T01:32:29.377Z\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{server}}/entities",
-					"host": [
-						"{{server}}"
-					],
-					"path": [
-						"entities"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "get-svelte-canvas-backend.postman_collection.json",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{server}}/svelte-canvas-backend.postman_collection.json",
-					"host": [
-						"{{server}}"
-					],
-					"path": [
-						"svelte-canvas-backend.postman_collection.json"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "get-api",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{server}}/api",
-					"host": [
-						"{{server}}"
-					],
-					"path": [
-						"api"
-					]
-				}
-			},
-			"response": []
-		}
-	],
-	"variable": [
-		{
-			"key": "server",
-			"value": "http://localhost:3000",
-			"type": "default"
-		}
-	]
+    "info": {
+        "_postman_id": "7bb60766-5647-4f40-9044-37008c1c709a",
+        "name": "svelte-canvas-backend",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "get",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "body": {},
+                "url": {
+                    "raw": "{{server}}/",
+                    "host": [
+                        "{{server}}"
+                    ],
+                    "path": [
+                        ""
+                    ]
+                }
+            }
+        },
+        {
+            "name": "get-ingredients",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "body": {},
+                "url": {
+                    "raw": "{{server}}/ingredients",
+                    "host": [
+                        "{{server}}"
+                    ],
+                    "path": [
+                        "ingredients"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "get-entities",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "body": {},
+                "url": {
+                    "raw": "{{server}}/entities",
+                    "host": [
+                        "{{server}}"
+                    ],
+                    "path": [
+                        "entities"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "post-entities",
+            "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"date\": \"2023-03-18T01:39:55.263Z\"\n}",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    }
+                },
+                "url": {
+                    "raw": "{{server}}/entities",
+                    "host": [
+                        "{{server}}"
+                    ],
+                    "path": [
+                        "entities"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "get-svelte-canvas-backend.postman_collection.json",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "body": {},
+                "url": {
+                    "raw": "{{server}}/svelte-canvas-backend.postman_collection.json",
+                    "host": [
+                        "{{server}}"
+                    ],
+                    "path": [
+                        "svelte-canvas-backend.postman_collection.json"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "get-api",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "body": {},
+                "url": {
+                    "raw": "{{server}}/api",
+                    "host": [
+                        "{{server}}"
+                    ],
+                    "path": [
+                        "api"
+                    ]
+                }
+            }
+        }
+    ],
+    "variable": [
+        {
+            "key": "server",
+            "value": "http://localhost:3000",
+            "type": "default"
+        }
+    ]
 }

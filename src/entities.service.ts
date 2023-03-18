@@ -25,7 +25,7 @@ export function config(app:Express):ServiceConfigResult{
         "POST /entities":{
             method:"POST",
             path:"/entities",
-            body:"Drawable",
+            body:{date:new Date()},
             response:"Drawable",
         },
     }

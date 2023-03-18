@@ -32,11 +32,12 @@ export function config(app:Express,configuredPaths:ServiceConfigResult):ServiceC
             const config:ServiceConfigItemDescriptor=configuredPaths[pathexpr]
             const path = config.path.substring(1)
             const name = [config.method.toLowerCase(),...path.replace(/\//gi,"-").split("-")].filter(v => v!=="").join("-")
-            return {
+            const r = {
                 name,
             "request": {
               "method": config.method,
               "header": [],
+              "body":{},
               "url": {
                 "raw": `{{server}}${config.path}`,
                 "host": [
@@ -48,6 +49,18 @@ export function config(app:Express,configuredPaths:ServiceConfigResult):ServiceC
               }
             },
           }
+          if(config.body){
+            r.request.body={
+                "mode": "raw",
+                "raw": (JSON.stringify(config.body,null,"  ")),
+                "options": {
+                    "raw": {
+                        "language": "json"
+                    }
+                }
+            }
+          }
+          return r;
         }),
         "variable": [
           {
