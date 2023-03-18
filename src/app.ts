@@ -23,51 +23,8 @@ export function trimIndent(s:string):string{
 const configuredPaths={
   ...testServiceConfig(app),
   ...entitiesServiceConfig(app),
-}
-configuredPaths["/svelte-canvas-backend.postman_collection.json"]={
-  method:"GET",
-  path:"/svelte-canvas-backend.postman_collection.json",
-  response:"json",
-} as ServiceConfigItemDescriptor
+} as ServiceConfigResult
 console.log(configuredPaths)
-app.get("/api",(req, res) => {})
-app.get('/svelte-canvas-backend.postman_collection.json', (req, res) => {
-  res.send({
-    "info": {
-      "_postman_id": "7bb60766-5647-4f40-9044-37008c1c709a",
-      "name": "svelte-canvas-backend",
-      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-    },
-    item:Object.keys(configuredPaths).map(
-      (pathexpr:string) => {
-        const config:ServiceConfigItemDescriptor=configuredPaths[pathexpr]
-        const path = config.path.replace(/^[/]/gi,"")
-        return {
-        "name": `${config.method}-${path}`,
-        "request": {
-          "method": config.method,
-          "header": [],
-          "url": {
-            "raw": `"{{server}}${config.path}`,
-            "host": [
-              "{{server}}"
-            ],
-            "path": [
-              path
-            ]
-          }
-        },
-      }
-    }),
-    "variable": [
-      {
-        "key": "server",
-        "value": "http://localhost:3000",
-        "type": "default"
-      }
-    ]
-  });
-});
 
 if (process.env.PROD !== undefined){
   app.listen(3000);
