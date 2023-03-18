@@ -1,5 +1,5 @@
 import {Express} from "express";
-import { trimIndent } from "./app";
+import { trimIndent } from "./lib/trimIndent";
 import { ServiceConfigResult } from "./meta";
 
 export function config(app:Express):ServiceConfigResult{
@@ -36,7 +36,7 @@ export function config(app:Express):ServiceConfigResult{
         },
         "/ingredients":{
             method:"GET",
-            path:"/",
+            path:"/ingredients",
             response:trimIndent(`
             {
                 id: string;

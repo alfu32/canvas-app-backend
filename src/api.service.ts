@@ -1,5 +1,5 @@
 import {Express} from "express";
-import { trimIndent } from "./app";
+import { trimIndent } from "./lib/trimIndent";
 import { ServiceConfigItemDescriptor, ServiceConfigResult } from "./meta";
 
 export function config(app:Express,configuredPaths:ServiceConfigResult):ServiceConfigResult{
@@ -8,7 +8,7 @@ export function config(app:Express,configuredPaths:ServiceConfigResult):ServiceC
       path:"/svelte-canvas-backend.postman_collection.json",
       response:"json",
     } as ServiceConfigItemDescriptor
-    configuredPaths["/svelte-canvas-backend.postman_collection.json"]={
+    configuredPaths["/api"]={
       method:"GET",
       path:"/api",
       response:trimIndent(`
@@ -30,14 +30,15 @@ export function config(app:Express,configuredPaths:ServiceConfigResult):ServiceC
         item:Object.keys(configuredPaths).map(
           (pathexpr:string) => {
             const config:ServiceConfigItemDescriptor=configuredPaths[pathexpr]
-            const path = config.path.replace(/^[/]/gi,"")
+            const path = config.path.substring(1)
+            const name = [config.method.toLowerCase(),...path.replace(/\//gi,"-").split("-")].filter(v => v!=="").join("-")
             return {
-            "name": `${config.method}-${path}`,
+                name,
             "request": {
               "method": config.method,
               "header": [],
               "url": {
-                "raw": `"{{server}}${config.path}`,
+                "raw": `{{server}}${config.path}`,
                 "host": [
                   "{{server}}"
                 ],
