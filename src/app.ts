@@ -28,12 +28,11 @@ const app:Express = express();
         )
     }
  */
-app.use(express.json());
 app.use(function(req, res, next) {
   const origin = req.headers?.origin 
     || req.headers?.referer
     || "*"
-  res.setHeader("Access-Control-Allow-Origin","*")
+  res.setHeader("Access-Control-Allow-Origin",origin)
   res.setHeader("Access-Control-Allow-Methods","GET,POST,PUT,DELETE,TRACE,PATCH,OPTIONS")
   res.setHeader("Access-Control-Allow-Headers","Content-Type")
   
@@ -41,6 +40,7 @@ app.use(function(req, res, next) {
   console.log({req,res})
   next();
 })
+app.use(express.json());
 
 const configuredPaths={
   ...testServiceConfig(app),

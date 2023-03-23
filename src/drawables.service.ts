@@ -14,8 +14,8 @@ export function config(app:Express):ServiceConfigResult{
     app.get("/drawables",async (req,res)=>{
 
         const response={
-            query:req.query,
-            path:req.path,
+            query:req['query'],
+            path:req['path'],
             op:"post",
             date:new Date(),
         }
@@ -60,7 +60,8 @@ export function config(app:Express):ServiceConfigResult{
     app.post("/drawables/metadata",async (req,res)=>{
 
         const response={
-            req:req.query,
+            req:req.body,
+            op:"get-metadata",
             date:new Date()
         }
         res.send( response)
