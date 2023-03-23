@@ -1,6 +1,5 @@
 import {Express} from "express";
 import { ServiceConfigResult } from "./meta";
-import {Point,Box} from '../../canvas-app-library/lib'
 
 interface ParsedQs { [key: string]: undefined | string | string[] | ParsedQs | ParsedQs[] };
 
@@ -14,11 +13,12 @@ export class DrawableServiceResponse<T>{
 export function config(app:Express):ServiceConfigResult{
     app.get("/drawables",async (req,res)=>{
 
-        const response=new DrawableServiceResponse<Box>(
-            Box.of(req.query),
-            "get",
-            new Date(),
-        )
+        const response={
+            query:req.query,
+            path:req.path,
+            op:"post",
+            date:new Date(),
+        }
         res.send( response)
     })
     app.post("/drawables",(req,res)=>{
