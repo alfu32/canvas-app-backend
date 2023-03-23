@@ -30,11 +30,15 @@ export function config(app:Express):ServiceConfigResult{
     });
     return {
         "GET /":{
+            name:"root",
+            folder:"test",
             method:"GET",
             path:"/",
             response:"string",
         },
         "GET /ingredients":{
+            name:"get-ingredients",
+            folder:"test",
             method:"GET",
             path:"/ingredients",
             response:trimIndent(`

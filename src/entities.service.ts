@@ -18,11 +18,15 @@ export function config(app:Express):ServiceConfigResult{
     })
     return {
         "GET /entities":{
+            name:"get-entities",
+            folder:"entities",
             method:"GET",
             path:"/entities",
             response:"Drawable",
         },
         "POST /entities":{
+            name:"save-entities",
+            folder:"entities",
             method:"POST",
             path:"/entities",
             body:{date:new Date()},

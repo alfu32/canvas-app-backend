@@ -1,14 +1,18 @@
 import {Express} from "express";
 import { trimIndent } from "./lib/trimIndent";
-import { ServiceConfigItemDescriptor, ServiceConfigResult } from "./meta";
+import { map, ServiceConfigItemDescriptor, ServiceConfigResult } from "./meta";
 
 export function config(app:Express,configuredPaths:ServiceConfigResult):ServiceConfigResult{
     configuredPaths["GET /svelte-canvas-backend.postman_collection.json"]={
+      name:"postman-collection-json",
+      folder:"api",
       method:"GET",
       path:"/svelte-canvas-backend.postman_collection.json",
       response:"json",
-    } as ServiceConfigItemDescriptor
+    } as ServiceConfigItemDescriptor;
     configuredPaths["GET /api"]={
+      name:"api-definitions",
+      folder:"api",
       method:"GET",
       path:"/api",
       response:trimIndent(`
@@ -16,9 +20,33 @@ export function config(app:Express,configuredPaths:ServiceConfigResult):ServiceC
         [pathmatch: string]: ServiceConfigItemDescriptor;
       }
       `),
-    } as ServiceConfigItemDescriptor
+    } as ServiceConfigItemDescriptor;
+    configuredPaths["GET /api/byFolder"]={
+      name:"api-definitions-by-folder",
+      folder:"api",
+      method:"GET",
+      path:"/api/byFolder",
+      response:trimIndent(`
+      {
+        [pathmatch: string]: map<ServiceConfigItemDescriptor>;
+      }
+      `),
+    } as ServiceConfigItemDescriptor;
+
+    const groupByFolders=Object.keys(configuredPaths).reduce(
+      (folders:map<ServiceConfigItemDescriptor[]>,pathexpr:string) => {
+        const config:ServiceConfigItemDescriptor=configuredPaths[pathexpr]
+        const folderName=config.folder
+        folders[folderName]=folders[folderName]||[]
+        folders[folderName].push(config)
+        return folders
+      },{} as map<ServiceConfigItemDescriptor[]>
+    )
     app.get("/api",(_req, res) => {
         res.send(configuredPaths)
+    })
+    app.get("/api/byFolder",(_req, res) => {
+        res.send(groupByFolders)
     })
     app.get('/svelte-canvas-backend.postman_collection.json', (_req, res) => {
       res.send({
@@ -27,41 +55,17 @@ export function config(app:Express,configuredPaths:ServiceConfigResult):ServiceC
           "name": "svelte-canvas-backend",
           "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
         },
-        item:Object.keys(configuredPaths).map(
-          (pathexpr:string) => {
-            const config:ServiceConfigItemDescriptor=configuredPaths[pathexpr]
-            const path = config.path.substring(1)
-            const name = [config.method.toLowerCase(),...path.replace(/\//gi,"-").split("-")].filter(v => v!=="").join("-")
-            const r = {
-                name,
-            "request": {
-              "method": config.method,
-              "header": [],
-              "body":{},
-              "url": {
-                "raw": `{{server}}${config.path}`,
-                "host": [
-                  "{{server}}"
-                ],
-                "path": [
-                  path
-                ]
-              }
-            },
-          }
-          if(config.body){
-            r.request.body={
-                "mode": "raw",
-                "raw": (JSON.stringify(config.body,null,"  ")),
-                "options": {
-                    "raw": {
-                        "language": "json"
-                    }
-                }
+        item:Object.keys(groupByFolders)
+          .map( (folder:string) => {
+            return {
+              name:folder,
+              item:groupByFolders[folder].map(
+                (config:ServiceConfigItemDescriptor) => {
+                  return configToPostmanJson(config);
+              }),
             }
           }
-          return r;
-        }),
+        ),
         "variable": [
           {
             "key": "server",
@@ -72,4 +76,38 @@ export function config(app:Express,configuredPaths:ServiceConfigResult):ServiceC
       });
     });
     return {}
+}
+
+function configToPostmanJson(config: ServiceConfigItemDescriptor) {
+  const path = config.path.substring(1);
+  const name = config.name||[config.method.toLowerCase(), ...path.replace(/\//gi, "-").split("-")].filter(v => v !== "").join("-");
+  const r = {
+    name,
+    "request": {
+      "method": config.method,
+      "header": [],
+      "body": {},
+      "url": {
+        "raw": `{{server}}${config.path}`,
+        "host": [
+          "{{server}}"
+        ],
+        "path": [
+          path
+        ]
+      }
+    },
+  };
+  if (config.body) {
+    r.request.body = {
+      "mode": "raw",
+      "raw": (JSON.stringify(config.body, null, "  ")),
+      "options": {
+        "raw": {
+          "language": "json"
+        }
+      }
+    };
+  }
+  return r;
 }
