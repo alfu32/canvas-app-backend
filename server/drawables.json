@@ -1,0 +1,140 @@
+{
+ "_type": "Drawable",
+ "id": "69074df1-cad3-11ed-ac8b-3771552d722a",
+ "anchor": {
+  "x": 250,
+  "y": 225,
+  "z": 0,
+  "t": 0,
+  "tag": ""
+ },
+ "size": {
+  "x": 50,
+  "y": 50,
+  "z": 0,
+  "t": 0,
+  "tag": ""
+ },
+ "parent": null,
+ "children": []
+}
+{
+ "_type": "Drawable",
+ "id": "6a356db1-cad3-11ed-ac8b-3771552d722a",
+ "anchor": {
+  "x": 525,
+  "y": 225,
+  "z": 0,
+  "t": 0,
+  "tag": ""
+ },
+ "size": {
+  "x": 50,
+  "y": 50,
+  "z": 0,
+  "t": 0,
+  "tag": ""
+ },
+ "parent": null,
+ "children": []
+}
+{
+ "_type": "Drawable",
+ "id": "6a9fef51-cad3-11ed-ac8b-3771552d722a",
+ "anchor": {
+  "x": 475,
+  "y": 400,
+  "z": 0,
+  "t": 0,
+  "tag": ""
+ },
+ "size": {
+  "x": 50,
+  "y": 50,
+  "z": 0,
+  "t": 0,
+  "tag": ""
+ },
+ "parent": null,
+ "children": []
+}
+{
+ "_type": "Drawable",
+ "id": "6b06ee81-cad3-11ed-ac8b-3771552d722a",
+ "anchor": {
+  "x": 250,
+  "y": 500,
+  "z": 0,
+  "t": 0,
+  "tag": ""
+ },
+ "size": {
+  "x": 50,
+  "y": 50,
+  "z": 0,
+  "t": 0,
+  "tag": ""
+ },
+ "parent": null,
+ "children": []
+}
+{
+ "_type": "Drawable",
+ "id": "6b8b12a1-cad3-11ed-ac8b-3771552d722a",
+ "anchor": {
+  "x": 550,
+  "y": 575,
+  "z": 0,
+  "t": 0,
+  "tag": ""
+ },
+ "size": {
+  "x": 50,
+  "y": 50,
+  "z": 0,
+  "t": 0,
+  "tag": ""
+ },
+ "parent": null,
+ "children": []
+}
+{
+ "_type": "Drawable",
+ "id": "6bd31821-cad3-11ed-ac8b-3771552d722a",
+ "anchor": {
+  "x": 750,
+  "y": 350,
+  "z": 0,
+  "t": 0,
+  "tag": ""
+ },
+ "size": {
+  "x": 50,
+  "y": 50,
+  "z": 0,
+  "t": 0,
+  "tag": ""
+ },
+ "parent": null,
+ "children": []
+}
+{
+ "_type": "Drawable",
+ "id": "6c508581-cad3-11ed-ac8b-3771552d722a",
+ "anchor": {
+  "x": 850,
+  "y": 450,
+  "z": 0,
+  "t": 0,
+  "tag": ""
+ },
+ "size": {
+  "x": 50,
+  "y": 50,
+  "z": 0,
+  "t": 0,
+  "tag": ""
+ },
+ "parent": null,
+ "children": []
+}
