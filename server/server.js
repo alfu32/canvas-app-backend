@@ -24,12 +24,23 @@ const server = http.createServer(function (req, res) {
             body += chunk;
         });
         req.on('end', () => {
-            const contentBuffer=body
-            const reqBodyJson=JSON.parse((contentBuffer||"").toString())
-            const rq={
+            let contentBuffer=""
+            let reqBodyJson=null
+            let rq;
+            if(body){
+                contentBuffer=body
+                reqBodyJson=JSON.parse((contentBuffer||"").toString())
+                rq={
+                        path:req.url,
+                        method:req.method,
+                        body:reqBodyJson,
+                }
+            } else {
+                rq={
                     path:req.url,
                     method:req.method,
-                    body:reqBodyJson,
+                    body:null,
+                }
             }
             let ent=null
             // switch(reqBodyJson._type){
