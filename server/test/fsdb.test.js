@@ -18,7 +18,25 @@
 /// const f=fsdb.find({id})
 /// console.log("find::new item",f)
 
-
+const {Point,Box} = require('../geometry')
 const {InMemoryNoSQLDatabase}=require("../imdb/InMemoryNoSQLDatabase")
+const {TopologicalDatabase} = require("../fsdb")
+
+const topodb=TopologicalDatabase.usingFile("topodb")
+function getAnItem(){
+    const id=(Math.random()*100).toFixed(0)
+    const sz=(Math.random()*1000+50).toFixed(0)
+    const size=Point.of({x:sz,y:sz})
+    const anchor=size.clone().alter(c=> Math.floor(Math.random()*1000+50))
+    const newItem={id:id,data:"data "+id,anchor,size}
+    return newItem;
+}
+topodb.add(getAnItem())
+topodb.add(getAnItem())
+topodb.add(getAnItem())
+topodb.add(getAnItem())
+topodb.add(getAnItem())
 
 
+console.log(topodb.db.data)
+console.log(topodb.db.indexes)

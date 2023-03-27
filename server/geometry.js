@@ -28,6 +28,16 @@ class Point{
     clone(){
         return Point.of(this);
     }
+    add(other){
+        this.x+=other.x
+        this.y+=other.y
+        return this
+    }
+    sub(other){
+        this.x-=other.x
+        this.y-=other.y
+        return this
+    }
     /**
      * transforms x,y in place using the function  fn
      * @param {(number)=>number} fn transformer

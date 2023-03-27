@@ -277,6 +277,11 @@ class DiskStorageAdapter extends StorageAdapter{
     static of(filename){
         const dsa=new DiskStorageAdapter();
         dsa.filename=filename;
+        return dsa;
+    }
+    getAll(){
+        console.log("TODO:DiskStorageAdapter.getAll",{})
+        return []
     }
     store({record}){
         console.log("TODO:DiskStorageAdapter.store",{record})
@@ -313,22 +318,28 @@ class TopologicalDatabase{
     /**
      * 
      * @param {string} filename 
+     * @returns {TopologicalDatabase}
      */
     static usingFile(filename){
-        const td=new TopologicalDatabase()
-        const db=new InMemoryNoSQLDatabase()
-        const storageBackend=DiskStorageAdapter.of(filename)
-        td.data=storageBackend.getAll()
-        db.indexBy("id",e => [e.id])
-        db.indexBy("box",e => Box.of(e).getSlices(1000))
+        const td=new TopologicalDatabase();
+        const db=new InMemoryNoSQLDatabase();
+        const storageBackend=DiskStorageAdapter.of(filename);
+        db.data=storageBackend.getAll().reduce((a,r) => {
+            a[r.id]=r.id;
+            return a;
+        },{});
 
-        db.on('add',({record})=>storageBackend.store({record}))
-        db.on('update',({record})=>storageBackend.update({record}))
-        db.on('remove',({record,before})=>storageBackend.remove({record,before}))
-        db.on('index',({indexName,indexValue,record})=>storageBackend.index({indexName,indexValue,record}))
-        db.on('removeFromIndex',({record})=>storageBackend.removeFromIndex({record}))
-        td.db=database;
+        db.indexBy("id",e => [e.id]);
+        db.indexBy("box",e => Box.of(e).getSlices(1000));
+
+        db.on('add',({record})=>storageBackend.store({record}));
+        db.on('update',({record})=>storageBackend.update({record}));
+        db.on('remove',({record,before})=>storageBackend.remove({record,before}));
+        db.on('index',({indexName,indexValue,record})=>storageBackend.index({indexName,indexValue,record}));
+        db.on('removeFromIndex',({record})=>storageBackend.removeFromIndex({record}));
+        td.db=db;
         td.storage=storageBackend;
+        return td;
     }
     /**
      * 
@@ -372,4 +383,4 @@ class TopologicalDatabase{
     }
 }
 
-module.exports={FsDbIndexer,FsDb}
+module.exports={FsDbIndexer,FsDb,StorageAdapter,DiskStorageAdapter,TopologicalDatabase}
