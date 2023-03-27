@@ -79,6 +79,14 @@ class Box{
      * @field {Point} size
      */
     size;
+    /**
+     * 
+     * @param {number} scale 
+     * @returns {Box[]}
+     */
+    getContainingBoxes(scale){
+        return [Box.of(this)]
+    }
 }
 module.exports={
     Point,

@@ -269,4 +269,20 @@ function lastById(table){
     ))
 }
 
+
+const {InMemoryNoSQLDatabase}=require("./imdb/InMemoryNoSQLDatabase")
+const {Point,Box}=require("./geometry")
+class TopologicalDatabase{
+    /**
+     * @type {InMemoryNoSQLDatabase}
+     */
+    database
+    static usingFile(filename){
+        const td=new TopologicalDatabase()
+        td.database=new InMemoryNoSQLDatabase()
+        td.database.indexBy("id",e => [e.id])
+        td.database.indexBy("box",e => Box.of(e).getContainingBoxes(1000))
+    }
+}
+
 module.exports={FsDbIndexer,FsDb}
