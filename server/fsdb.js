@@ -18,27 +18,27 @@ const fs = require( 'fs')
  */
 class FsDbIndexer{
     /**
-     * @field {string} name
+     * @type {string} name
      */
     name='index';
     /**
-     * @field {string} file
+     * @type {string} file
      */
     file='index.json';
     /**
-     * @field {FsDbIndex[]} index
+     * @type {FsDbIndex[]} index
      */
     index=[]
     /**
-     * @field {{[key:string]:FsDbIndex[]}} indexByValue
+     * @type {{[key:string]:FsDbIndex[]}} indexByValue
      */
     indexByValue={}
     /**
-     * @field {(Entity)=>string[]} indexByValue
+     * @type {(Entity)=>string[]} indexByValue
      */
     indexerFn=(e)=>[e.id]
     /**
-     * @field {FsDb} database
+     * @type {FsDb} database
      */
     database;
     /**
@@ -172,19 +172,19 @@ class FsDbIndexer{
 }
 class FsDb{
     /**
-     * @field {string} databaseName
+     * @type {string} databaseName
      */
     databaseName="";
     /**
-     * @field {string} file
+     * @type {string} file
      */
     file='db.json';
     /**
-     * @field {FsDbIndexer[]} indexers
+     * @type {FsDbIndexer[]} indexers
      */
     indexers=[]
     /**
-     * @field {FsDbIndexer} defaultIndexer
+     * @type {FsDbIndexer} defaultIndexer
      */
     defaultIndexer
     /**
@@ -268,7 +268,32 @@ function lastById(table){
         },{}
     ))
 }
-
+class StorageAdapter{}
+class DiskStorageAdapter extends StorageAdapter{
+    /**
+     * @type {string}
+     */
+    filename
+    static of(filename){
+        const dsa=new DiskStorageAdapter();
+        dsa.filename=filename;
+    }
+    store({record}){
+        console.log("TODO:DiskStorageAdapter.store",{record})
+    }
+    update({record}){
+        console.log("TODO:DiskStorageAdapter.update",{record})
+    }
+    remove({record,before}){
+        console.log("TODO:DiskStorageAdapter.remove",{record,before})
+    }
+    index({indexName,indexValue,record}){
+        console.log("TODO:DiskStorageAdapter.index",{indexName,indexValue,record})
+    }
+    removeFromIndex({record}){
+        console.log("TODO:DiskStorageAdapter.removeFromIndex",{record})
+    }
+}
 
 const {InMemoryNoSQLDatabase}=require("./imdb/InMemoryNoSQLDatabase")
 const {Point,Box}=require("./geometry")
@@ -276,12 +301,74 @@ class TopologicalDatabase{
     /**
      * @type {InMemoryNoSQLDatabase}
      */
-    database
+    db
+    /**
+     * @type {StorageAdapter}
+     */
+    storage
+    /**
+     * @type {number}
+     */
+    boxScale=1000
+    /**
+     * 
+     * @param {string} filename 
+     */
     static usingFile(filename){
         const td=new TopologicalDatabase()
-        td.database=new InMemoryNoSQLDatabase()
-        td.database.indexBy("id",e => [e.id])
-        td.database.indexBy("box",e => Box.of(e).getContainingBoxes(1000))
+        const db=new InMemoryNoSQLDatabase()
+        const storageBackend=DiskStorageAdapter.of(filename)
+        td.data=storageBackend.getAll()
+        db.indexBy("id",e => [e.id])
+        db.indexBy("box",e => Box.of(e).getSlices(1000))
+
+        db.on('add',({record})=>storageBackend.store({record}))
+        db.on('update',({record})=>storageBackend.update({record}))
+        db.on('remove',({record,before})=>storageBackend.remove({record,before}))
+        db.on('index',({indexName,indexValue,record})=>storageBackend.index({indexName,indexValue,record}))
+        db.on('removeFromIndex',({record})=>storageBackend.removeFromIndex({record}))
+        td.db=database;
+        td.storage=storageBackend;
+    }
+    /**
+     * 
+     * @param {Record} record 
+     */
+    add(record){
+        this.db.add(record)
+    }
+    /**
+     * 
+     * @param {Record} record 
+     */
+    remove(record){
+        this.db.remove(record)
+    }
+    /**
+     * 
+     * @param {Record} record 
+     */
+    update(record,fn){
+        this.db.update(record,fn)
+    }
+    /**
+     * 
+     * @param {Record} record 
+     * @returns {Record}
+     */
+    findById(id){
+        return this.db.findByIndex('id',id)
+    }
+    /**
+     * 
+     * @param {Box} box 
+     * @returns {Record[]}
+     */
+    findInBox(box){
+        return box.getSlices(this.boxScale).flatMap(
+            slice => this.db.findByIndex('box',slice.toString())
+        )
+        
     }
 }
 

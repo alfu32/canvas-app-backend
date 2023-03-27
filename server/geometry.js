@@ -14,11 +14,11 @@ class Point{
         return p;
     }
     /**
-     * @field {number} x
+     * @type {number} x
      */
     x;
     /**
-     * @field {number} y
+     * @type {number} y
      */
     y;
     /**
@@ -44,8 +44,24 @@ class Point{
      * @param {number} n precision
      * @returns {Point} the quadrant value
      */
-    quadrant(n){
+    floor(n){
         return this.clone().alter((c)=>Math.floor(c/n)*n)
+    }
+    /**
+     * 
+     * @param {number} n precision
+     * @returns {Point} the quadrant value
+     */
+    round(n){
+        return this.clone().alter((c)=>Math.round(c/n)*n)
+    }
+    /**
+     * 
+     * @param {number} n precision
+     * @returns {Point} the quadrant value
+     */
+    ceil(n){
+        return this.clone().alter((c)=>Math.ceil(c/n)*n)
     }
     /**
      * to string override
@@ -55,7 +71,13 @@ class Point{
         return `${this.x},${this.y}`
     }
 }
-
+function *range(a,b,s){
+    const start=Math.floor(a/s)*s
+    const end=Math.ceil(b/s)*s
+    for(let k=start;k<=end;k+=s){
+        yield k
+    }
+}
 /**
  * @typedef Box
  */
@@ -72,11 +94,11 @@ class Box{
         return b
     }
     /**
-     * @field {Point} anchor
+     * @type {Point} anchor
      */
     anchor;
     /**
-     * @field {Point} size
+     * @type {Point} size
      */
     size;
     /**
@@ -84,8 +106,20 @@ class Box{
      * @param {number} scale 
      * @returns {Box[]}
      */
-    getContainingBoxes(scale){
-        return [Box.of(this)]
+    getSlices(scale){
+        const anchor=this.anchor.clone().floor(scale)
+        const size=this.anchor.clone().sub(anchor).add(this.size).ceil(scale)
+        const rounded=Box.of({anchor,size})
+        const boxes=[]
+        for(let x of range(rounded.x,rounded.x+size.x,scale)){
+            for(let y of range(rounded.y,rounded.y+size.y,scale)){
+                boxes.push(Box.of({anchor:Point.of({x,y}),size:Point.of({x:scale,y:scale})}))
+            }
+        }
+        return boxes
+    }
+    toString(){
+        return  `${anchor.toString()},${this.size.toString()}`
     }
 }
 module.exports={
