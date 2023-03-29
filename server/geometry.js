@@ -9,8 +9,8 @@ class Point{
      */
     static of(json){
         const p = new Point();
-        p.x=json?(json.x||json[0]):0;
-        p.y=json?(json.y||json[1]):0;
+        p.x=json?parseFloat(json.x||json[0]):0;
+        p.y=json?parseFloat(json.y||json[1]):0;
         return p;
     }
     /**
@@ -84,9 +84,15 @@ class Point{
 function *range(a,b,s){
     const start=Math.floor(a/s)*s
     const end=Math.ceil(b/s)*s
-    for(let k=start;k<=end;k+=s){
+    console.log({start,end})
+    yield start
+    let k=start
+    while(k<=end){
+        console.log({start,k,end})
+        k+=s
         yield k
     }
+    return end
 }
 /**
  * @typedef Box
@@ -120,9 +126,11 @@ class Box{
         const anchor=this.anchor.clone().floor(scale)
         const size=this.anchor.clone().sub(anchor).add(this.size).ceil(scale)
         const rounded=Box.of({anchor,size})
+        console.log("getSlices",this.anchor,this.size,anchor,size,rounded)
         const boxes=[]
-        for(let x of range(rounded.x,rounded.x+size.x,scale)){
-            for(let y of range(rounded.y,rounded.y+size.y,scale)){
+        return []
+        for(let x of range(anchor.x,anchor.x+size.x,scale)){
+            for(let y of range(anchor.y,anchor.y+size.y,scale)){
                 boxes.push(Box.of({anchor:Point.of({x,y}),size:Point.of({x:scale,y:scale})}))
             }
         }
@@ -134,5 +142,6 @@ class Box{
 }
 module.exports={
     Point,
-    Box
+    Box,
+    range,
 }

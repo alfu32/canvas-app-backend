@@ -13,12 +13,14 @@ class Record{
  * @param {map<any>} json 
  */
   static create(json){
-    this.id=v1()
+    const r=new Record()
+    r.id=v1()
     Object.entries(json).forEach(
       ([key,val])=>{
-        this[key]=val
+        r[key]=val
       }
     )
+    return r
   }
   /**
    * @field {string} id
@@ -51,7 +53,7 @@ class InMemoryNoSQLDatabase {
    * @param {Record} record 
    */
     add(record) {
-      this.data[record.id] = record;
+      this.data[record.id] = Record.create(record);
       this.index(record);
       this.broadcastEvent('add', {record});
     }
@@ -105,6 +107,7 @@ class InMemoryNoSQLDatabase {
    */
     index(record) {
       Object.entries(this.indexers).forEach(([indexName, indexerFn]) => {
+        console.log("INDEX_BY",{indexName,indexerFn:indexerFn.toString()})
         const indexValues = indexerFn(record);
         indexValues.forEach(indexValue => {
           if (!this.indexes[indexName]) {
