@@ -9,8 +9,8 @@ class Point{
      */
     static of(json){
         const p = new Point();
-        p.x=json?parseFloat(json.x||json[0]):0;
-        p.y=json?parseFloat(json.y||json[1]):0;
+        p.x=json&&json.x?parseFloat(json?.x):0;
+        p.y=json&&json.y?parseFloat(json?.y):0;
         return p;
     }
     /**
@@ -81,7 +81,7 @@ class Point{
         return `${this.x},${this.y}`
     }
 }
-function *range(a,b,s){
+function *range(a,b,s=1){
     const start=Math.floor(a/s)*s
     const end=Math.ceil(b/s)*s
     console.log({start,end})
@@ -128,7 +128,7 @@ class Box{
         const rounded=Box.of({anchor,size})
         console.log("getSlices",this.anchor,this.size,anchor,size,rounded)
         const boxes=[]
-        return []
+        // return []
         for(let x of range(anchor.x,anchor.x+size.x,scale)){
             for(let y of range(anchor.y,anchor.y+size.y,scale)){
                 boxes.push(Box.of({anchor:Point.of({x,y}),size:Point.of({x:scale,y:scale})}))
@@ -137,7 +137,8 @@ class Box{
         return boxes
     }
     toString(){
-        return  `${anchor.toString()},${this.size.toString()}`
+        const {anchor,size}=this
+        return  `${anchor.toString()},${size.toString()}`
     }
 }
 module.exports={

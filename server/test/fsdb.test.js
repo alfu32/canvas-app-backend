@@ -34,19 +34,20 @@ console.log(b.getSlices(100))
 
 
 const topodb=TopologicalDatabase.usingFile("topodb")
-function getAnItem(){
-    const id=(Math.random()*100).toFixed(0)
-    const sz=(Math.random()*1000+50).toFixed(0)
-    const size=Point.of({x:sz,y:sz})
-    const anchor=size.clone().alter(c=> Math.floor(Math.random()*1000+50))
+function getAnItem(id=Math.floor(Math.random()*100)){
+    // const id=Math.floor(Math.random()*100)
+    const size=Point.of({}).alter(c=> Math.floor(Math.random()*1000+50))
+    const anchor=size.clone().alter(c=> Math.floor(Math.random()*2000-1000))
     const newItem={id:id,data:"data "+id,anchor,size}
     return newItem;
 }
-topodb.add(getAnItem())
-topodb.add(getAnItem())
-topodb.add(getAnItem())
-topodb.add(getAnItem())
-topodb.add(getAnItem())
+for(let id of range(1,1000,1)){
+    topodb.add(getAnItem(id))
+}
+//// topodb.add(getAnItem())
+//// topodb.add(getAnItem())
+//// topodb.add(getAnItem())
+//// topodb.add(getAnItem())
 
 
 console.log("data",topodb.db.data)

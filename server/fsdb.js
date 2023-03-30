@@ -330,7 +330,7 @@ class TopologicalDatabase{
         },{});
 
         db.indexBy("id",e => [e.id]);
-        db.indexBy("box",e => Box.of(e).getSlices(1000));
+        db.indexBy("box",e => Box.of(e).getSlices(500));
 
         db.on('add',({record})=>storageBackend.store({record}));
         db.on('update',({record})=>storageBackend.update({record}));
